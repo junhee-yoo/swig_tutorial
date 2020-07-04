@@ -1,5 +1,12 @@
 all: java py
 
+js:
+# https://stackoverflow.com/questions/53540811/swig-for-javascript-module-did-not-self-register-on-load
+# https://github.com/swig/swig/issues/1520
+	cp example.c example.cxx
+	swig -javascript -node -c++ example.i
+	node-gyp build
+
 java:
 	swig -java example.i
 	gcc -c example.c example_wrap.c -I/Users/jhyoo/.jenv/versions/1.8/include -I/Users/jhyoo/.jenv/versions/1.8/include/darwin
@@ -27,5 +34,8 @@ clean:
 	rm -f main.class
 	rm -f libexample.dylib
 	rm -f libexample.so
-	rm -rf __pycache__
+	rm -rf __pycache__ build
 	rm -f example_wrap.c
+	rm -f example_wrap.cxx
+	rm -f example.cxx
+	rm -f package-lock.json
